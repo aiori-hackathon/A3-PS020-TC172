@@ -19,6 +19,13 @@ from .data_reader import SourceTracker, num, utc_now
 
 _FINAL = "final"
 _PATTERN = re.compile(r"^(m0|p1|p2)_benchmark_(\d{8})\.csv$")
+# Validated P1/P2 benchmarks from the 22 Nov revalidation session. Used only when the run that
+# owns the latest M0 benchmark has no P1/P2 file of its own. Deliberately NOT listed here:
+# recovery_20261122/p1_benchmark.csv - a preserved troubleshooting dataset (100% loss, no RTT)
+# that the repository's own reports exclude from the comparison.
+_RECOVERY_DIR = "recovery_20261122"
+_RECOVERY_RUN_DATE = "2026-11-22"
+_RECOVERY_FILES = {"P1": "p1_benchmark_revalidated.csv", "P2": "p2_benchmark_revalidated.csv"}
 _MODES: list[tuple[str, str, str]] = [
     ("M0", "M0_OSPFv3", "M0 · OSPFv3 baseline"),
     ("P1", "P1_SRv6", "M1 · SRv6 primary path (P1)"),
@@ -80,6 +87,8 @@ def aggregate(mode_id: Literal["M0", "P1", "P2"], mode: str, label: str, source_
 
 
 def _check_summary(tr: SourceTracker, run_id: str, modes: list[BenchmarkMode]) -> SummaryCheck | None:
+    if not modes:
+        return None
     rel = f"{_FINAL}/comparison_summary_{run_id}.csv"
     got = tr.csv_rows(rel, required=False)
     if got is None:
@@ -106,7 +115,27 @@ def _check_summary(tr: SourceTracker, run_id: str, modes: list[BenchmarkMode]) -
     return SummaryCheck(file=tr.display(rel), matches=not problems, mismatches=problems)
 
 
+def _load_mode(tr: SourceTracker, mode_id: str, mode: str, label: str, rel: str, include_trials: bool) -> BenchmarkMode | None:
+    """Read one per-trial CSV into a BenchmarkMode. Invalid rows are excluded (never repaired)."""
+    got = tr.csv_rows(rel)
+    if got is None:
+        return None
+    rows, _ = got
+    name = rel.rsplit("/", 1)[-1]
+    trials, skipped = parse_trials(rows)
+    if skipped:
+        tr.warnings.append(f"{name}: {skipped} row(s) had missing or invalid values and were excluded.")
+    if not trials:
+        tr.warnings.append(f"{name}: no valid trial rows; {mode_id} not reported.")
+        return None
+    requested = {int(v) for r in rows if (v := num(r.get("requested_pps"))) is not None}
+    return aggregate(mode_id, mode, label, tr.display(rel), trials, skipped, requested, include_trials)  # type: ignore[arg-type]
+
+
 def load_latest_run(tr: SourceTracker, include_trials: bool) -> BenchmarkRun | None:
+    """M0 comes from the newest run whose M0 file is valid. P1/P2 come from that same run when it
+    has them; otherwise from the validated recovery CSVs, with a warning that they are a separate
+    recorded run. Trials are never merged or pooled across runs."""
     found: dict[str, dict[str, str]] = {}  # run_id -> {m0|p1|p2: filename}
     for name in tr.list_dir(_FINAL):
         m = _PATTERN.match(name)
@@ -115,28 +144,45 @@ def load_latest_run(tr: SourceTracker, include_trials: bool) -> BenchmarkRun | N
     if not found:
         tr.warnings.append(f"No benchmark files matching <mode>_benchmark_YYYYMMDD.csv in {tr.display(_FINAL)}.")
         return None
-    run_id = max(found)
-    modes: list[BenchmarkMode] = []
-    for mode_id, mode, label in _MODES:
-        name = found[run_id].get(mode_id.lower())
-        if not name:
-            tr.warnings.append(f"Run {run_id}: no per-trial file for {mode_id}; not reported.")
+
+    m0_mode = next(m for m in _MODES if m[0] == "M0")
+    m0: BenchmarkMode | None = None
+    run_id = ""
+    for rid in sorted((r for r in found if "m0" in found[r]), reverse=True):
+        m0 = _load_mode(tr, *m0_mode, f"{_FINAL}/{found[rid]['m0']}", include_trials)
+        if m0 is not None:
+            run_id = rid
+            break
+        tr.warnings.append(f"Run {rid}: M0 benchmark is not usable; trying an earlier run.")
+    if m0 is None:  # no usable M0 anywhere: report what the newest run has, without M0
+        run_id = max(found)
+        tr.warnings.append("No valid M0 benchmark found; M0 not reported.")
+
+    modes: list[BenchmarkMode] = [m0] if m0 else []
+    same_run: list[BenchmarkMode] = list(modes)
+    for mode_id, mode, label in _MODES[1:]:
+        own = found[run_id].get(mode_id.lower())
+        if own:
+            got = _load_mode(tr, mode_id, mode, label, f"{_FINAL}/{own}", include_trials)
+            if got:
+                modes.append(got)
+                same_run.append(got)
             continue
-        got = tr.csv_rows(f"{_FINAL}/{name}")
-        if got is None:
+        rel = f"{_RECOVERY_DIR}/{_RECOVERY_FILES[mode_id]}"
+        if not tr.exists(rel):
+            tr.warnings.append(f"Run {run_id}: no per-trial file for {mode_id} and no validated recovery file at {tr.display(rel)}; not reported.")
             continue
-        rows, _ = got
-        trials, skipped = parse_trials(rows)
-        if skipped:
-            tr.warnings.append(f"{name}: {skipped} row(s) had missing or invalid values and were excluded.")
-        if not trials:
-            tr.warnings.append(f"{name}: no valid trial rows; {mode_id} not reported.")
-            continue
-        requested = {int(v) for r in rows if (v := num(r.get("requested_pps"))) is not None}
-        modes.append(aggregate(mode_id, mode, label, tr.display(f"{_FINAL}/{name}"), trials, skipped, requested, include_trials))  # type: ignore[arg-type]
+        got = _load_mode(tr, mode_id, mode, label, rel, include_trials)
+        if got:
+            tr.warnings.append(
+                f"Run {run_id}: no matching per-trial file for {mode_id}; using the validated recovery benchmark "
+                f"{tr.display(rel)}. {mode_id} is from a separate recorded run ({_RECOVERY_RUN_DATE}), not the "
+                f"{_date(run_id)} {m0_mode[0]} run; trials are not merged."
+            )
+            modes.append(got)
     if not modes:
         return None
-    return BenchmarkRun(run_id=run_id, run_date=_date(run_id), modes=modes, summary_file_check=_check_summary(tr, run_id, modes))
+    return BenchmarkRun(run_id=run_id, run_date=_date(run_id), modes=modes, summary_file_check=_check_summary(tr, run_id, same_run))
 
 
 def _load_earlier(tr: SourceTracker) -> BenchmarkRun | None:
@@ -171,6 +217,16 @@ def build(settings: Settings, include_trials: bool = False) -> BenchmarksRespons
                 max_rtt_delta_vs_m0_ms=round(m.max_rtt_ms - m0.max_rtt_ms, 6) if m0 else None,
                 packet_loss_delta_vs_m0_pp=round(m.packet_loss_percent - m0.packet_loss_percent, 6) if m0 else None,
             ))
+    notes = [
+        "Median RTT is the median of per-trial average RTTs; per-packet RTTs are not stored in the result files.",
+        "Maximum RTT is the highest per-trial maximum, i.e. the worst single packet in the run; outliers are retained.",
+        "`earlier_run` is a previous P1/P2 run (no M0) and is kept only for reference; it differs from `latest` and is not mixed into it.",
+    ]
+    if latest and any(m.source_file.startswith(tr.display(_RECOVERY_DIR)) for m in latest.modes):
+        notes.append(
+            "Some modes in `latest` come from a separate recorded run (see each mode's `source_file` and the warnings); "
+            "`comparison_vs_m0` deltas therefore compare measurements from different runs."
+        )
     return BenchmarksResponse(
         data_source=tr.info("historical", "Per-trial benchmark CSVs recorded in src/results; recomputed here, not measured live."),
         generated_at=utc_now(),
@@ -178,9 +234,5 @@ def build(settings: Settings, include_trials: bool = False) -> BenchmarksRespons
         latest=latest,
         comparison_vs_m0=comparison,
         earlier_run=earlier,
-        notes=[
-            "Median RTT is the median of per-trial average RTTs; per-packet RTTs are not stored in the result files.",
-            "Maximum RTT is the highest per-trial maximum, i.e. the worst single packet in the run; outliers are retained.",
-            "`earlier_run` is a previous P1/P2 run (no M0) and is kept only for reference; it differs from `latest` and is not mixed into it.",
-        ],
+        notes=notes,
     )

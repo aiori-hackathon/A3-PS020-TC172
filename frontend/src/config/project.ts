@@ -50,6 +50,9 @@ export interface PathDef {
 }
 
 export const PROJECT = {
+  /** Product / team branding shown in the UI shell. */
+  product: 'NetNova',
+  problemStatement: 'PS-020',
   name: 'AIORI-3 SRv6',
   code: 'A3-PS020-TC172',
   team: 'NetNova',

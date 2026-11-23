@@ -18,30 +18,86 @@
     scrollbar-width: thin;
     scrollbar-color: #233252 transparent;
   }
+  :focus-visible {
+    @apply outline-none ring-2 ring-cyan-400/60 ring-offset-2 ring-offset-ink-950;
+  }
 }
 
 @layer components {
+  /* ---- Surfaces ------------------------------------------------------- */
   .panel {
     @apply rounded-xl border border-ink-600/60 bg-ink-850;
   }
+  .panel-inset {
+    @apply rounded-lg border border-ink-600/40 bg-ink-900/60;
+  }
+
+  /* ---- Typography ----------------------------------------------------- */
   .label {
     @apply text-[11px] font-medium uppercase tracking-wider text-slate-500;
   }
   .mono {
     @apply font-mono text-[12px] tracking-tight;
   }
+  .num {
+    @apply font-mono tabular-nums tracking-tight;
+  }
+
+  /* ---- Controls ------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-ink-500 bg-ink-800 px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors;
+  }
+  .btn:hover:not(:disabled) {
+    @apply border-cyan-400/50 text-cyan-200;
+  }
+  .btn:disabled {
+    @apply cursor-wait opacity-70;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-500 bg-ink-900 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-600;
+  }
+  .input:focus {
+    @apply border-cyan-400/60;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-500 bg-ink-800/60 px-2.5 py-1 text-xs font-medium text-slate-400 transition-colors;
+  }
+  .chip:hover {
+    @apply border-ink-400 text-slate-200;
+  }
+  .chip[aria-pressed='true'] {
+    @apply border-cyan-400/40 bg-cyan-400/10 text-cyan-200;
+  }
+
+  /* ---- Tables --------------------------------------------------------- */
+  .tbl {
+    @apply w-full text-left text-xs;
+  }
+  .tbl thead th {
+    @apply whitespace-nowrap border-b border-ink-600/60 px-3 py-2 text-[11px] font-medium uppercase tracking-wider text-slate-500;
+  }
+  .tbl tbody td {
+    @apply border-b border-ink-600/30 px-3 py-2.5 text-slate-300;
+  }
+  .tbl tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .tbl tbody tr:hover td {
+    @apply bg-ink-800/40;
+  }
 }
 
 /* Animated dashes along an active SVG path (traffic direction) */
 .flow-line {
-  stroke-dasharray: 6 6;
+  stroke-dasharray: 6 8;
   animation: flow 1.2s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .flow-line,
   .animate-pulse-dot,
-  .animate-fade-up {
+  .animate-fade-up,
+  .animate-slide-in {
     animation: none !important;
   }
 }

@@ -18,18 +18,67 @@ def test_every_endpoint_ok_and_labels_its_source(client, name):
         assert body["status"] == "ok" and body["read_only"] is True and body["version"] and body["timestamp"]
 
 
-def test_benchmarks_real_values_and_summary_crosscheck(client):
+def test_benchmarks_real_values_and_separate_run_warnings(client):
     b = client.get("/api/benchmarks").json()
-    modes = {m["id"]: m for m in b["latest"]["modes"]}
+    latest = b["latest"]
+    modes = {m["id"]: m for m in latest["modes"]}
+    assert latest["run_id"] == "20261121" and latest["run_date"] == "2026-11-21"
     assert set(modes) == {"M0", "P1", "P2"}
     assert all(m["trials"] == 30 and m["transmitted"] == 30000 and m["received"] == 30000 for m in modes.values())
-    assert modes["P1"]["max_rtt_ms"] == 97.209 and modes["M0"]["max_rtt_ms"] == 4.685
-    assert modes["P2"]["median_trial_avg_rtt_ms"] == pytest.approx(0.0205)
-    assert b["latest"]["summary_file_check"]["matches"] is True
-    assert b["earlier_run"] and {m["id"] for m in b["earlier_run"]["modes"]} == {"P1", "P2"}
+    # M0 from the latest M0 run; P1/P2 from the validated recovery CSVs (values match the repo's consolidated report).
+    assert modes["M0"]["source_file"] == "src/results/final/m0_benchmark_20261121.csv"
+    assert modes["P1"]["source_file"] == "src/results/recovery_20261122/p1_benchmark_revalidated.csv"
+    assert modes["P2"]["source_file"] == "src/results/recovery_20261122/p2_benchmark_revalidated.csv"
+    assert (modes["M0"]["max_rtt_ms"], modes["P1"]["max_rtt_ms"], modes["P2"]["max_rtt_ms"]) == (2.578, 0.448, 0.998)
+    assert modes["M0"]["mean_trial_avg_rtt_ms"] == pytest.approx(0.023233, abs=1e-6)
+    assert modes["P1"]["mean_trial_avg_rtt_ms"] == pytest.approx(0.011333, abs=1e-6)
+    assert modes["P2"]["median_trial_avg_rtt_ms"] == pytest.approx(0.015)
+    # The separate-run provenance is stated, per mode, and in the notes.
+    for mode_id in ("P1", "P2"):
+        assert any(mode_id in w and "separate recorded run" in w and "recovery_20261122" in w for w in b["warnings"])
+    assert not any("M0 is from a separate" in w for w in b["warnings"])
+    assert any("separate recorded run" in n for n in b["notes"])
+    assert latest["summary_file_check"] is None  # no comparison summary exists for the 20261121 run
+    assert b["earlier_run"] is None  # src/results/benchmark holds only invalid (NA, 100% loss) runs
     assert modes["M0"]["trial_rows"] is None
     with_rows = client.get("/api/benchmarks?include_trials=true").json()
-    assert len(with_rows["latest"]["modes"][0]["trial_rows"]) == 30
+    assert all(len(m["trial_rows"]) == 30 for m in with_rows["latest"]["modes"])  # one file per mode, nothing pooled
+
+
+def test_matching_p1_p2_files_preferred_over_recovery(client, src):
+    res = src / "results"
+    (res / "final/p1_benchmark_20261121.csv").write_text((res / "final/p1_benchmark_20261031.csv").read_text())
+    (res / "final/p2_benchmark_20261121.csv").write_text((res / "final/p2_benchmark_20261031.csv").read_text())
+    b = client.get("/api/benchmarks").json()
+    modes = {m["id"]: m for m in b["latest"]["modes"]}
+    assert modes["P1"]["source_file"] == "src/results/final/p1_benchmark_20261121.csv"
+    assert modes["P2"]["source_file"] == "src/results/final/p2_benchmark_20261121.csv"
+    assert not any("separate recorded run" in w for w in b["warnings"])
+    assert not any("separate recorded run" in n for n in b["notes"])
+    assert not any("recovery_20261122" in f for f in b["data_source"]["files"])
+
+
+def test_recovery_fallback_missing_or_invalid_is_not_fabricated(client, src):
+    rec = src / "results/recovery_20261122"
+    (rec / "p1_benchmark_revalidated.csv").unlink()
+    (rec / "p2_benchmark_revalidated.csv").write_text("trial,requested_pps,transmitted,received,packet_loss,duration_ms,min_ms,avg_ms,max_ms,mdev_ms\n1,0,1000,0,100%,NA,NA,NA,NA,NA\n")
+    b = client.get("/api/benchmarks").json()
+    assert [m["id"] for m in b["latest"]["modes"]] == ["M0"]
+    assert any("P1" in w and "not reported" in w for w in b["warnings"])
+    assert any("p2_benchmark_revalidated.csv" in w and "not reported" in w for w in b["warnings"])
+    # The preserved 100%-loss troubleshooting file p1_benchmark.csv is never used as a substitute.
+    assert not any(m["source_file"].endswith("recovery_20261122/p1_benchmark.csv") for m in b["latest"]["modes"])
+
+
+def test_unusable_latest_m0_falls_back_to_earlier_complete_run(client, src):
+    (src / "results/final/m0_benchmark_20261121.csv").write_text("")
+    b = client.get("/api/benchmarks").json()
+    assert b["latest"]["run_id"] == "20261031"
+    modes = {m["id"]: m for m in b["latest"]["modes"]}
+    assert set(modes) == {"M0", "P1", "P2"} and modes["P1"]["max_rtt_ms"] == 97.209 and modes["M0"]["max_rtt_ms"] == 4.685
+    assert all("/final/" in m["source_file"] and "20261031" in m["source_file"] for m in modes.values())
+    assert b["latest"]["summary_file_check"]["matches"] is True
+    assert not any("separate recorded run" in w for w in b["warnings"])
 
 
 def test_failover_matches_recorded_summary_and_declares_single_trial(client):
@@ -61,7 +110,7 @@ def test_topology_parsed_from_scripts(client):
 def test_overview_has_four_modes_and_source(client):
     o = client.get("/api/overview").json()
     assert [m["id"] for m in o["modes"]] == ["M0", "M1-P1", "M1-P2", "M2"]
-    assert o["last_updated"] and o["experiment_dates"]["benchmark_run"] == "2026-10-31"
+    assert o["last_updated"] and o["experiment_dates"]["benchmark_run"] == "2026-11-21"
     assert o["data_source"]["kind"] == "historical"
 
 
@@ -96,20 +145,19 @@ def test_missing_scripts_dir_gives_empty_topology(client, src, monkeypatch):
 
 
 def test_malformed_csv_rows_are_skipped_not_invented(client, src):
-    p = src / "results/final/p1_benchmark_20261031.csv"
+    p = src / "results/recovery_20261122/p1_benchmark_revalidated.csv"
     lines = p.read_text().splitlines()
-    lines[2] = "2,1000,1000,not-a-number,0%,1164,0.005,0.057,2.462,0.116"  # bad received
+    lines[2] = "2,1000,1000,not-a-number,0%,1008,0.005,0.015,0.299,0.016"  # bad received
     lines[3] = "3,1000"  # too few cells
     p.write_text("\n".join(lines) + "\n")
     b = client.get("/api/benchmarks").json()
     p1 = next(m for m in b["latest"]["modes"] if m["id"] == "P1")
     assert p1["trials"] == 28 and p1["skipped_rows"] >= 1 and p1["transmitted"] == 28000
-    assert b["latest"]["summary_file_check"]["matches"] is False  # disagreement is reported, not hidden
-    assert any("p1_benchmark_20261031.csv" in w for w in b["warnings"])
+    assert any("p1_benchmark_revalidated.csv" in w for w in b["warnings"])
 
 
 def test_empty_and_binary_garbage_files_do_not_crash(client, src):
-    (src / "results/final/m0_benchmark_20261031.csv").write_text("")
+    (src / "results/final/m0_benchmark_20261121.csv").write_text("")
     (src / "results/m2/failover_success_20261030.log").write_bytes(b"\x00\xff\xfe garbage \x00\n" * 50)
     assert client.get("/api/benchmarks").status_code == 200
     f = client.get("/api/failover").json()

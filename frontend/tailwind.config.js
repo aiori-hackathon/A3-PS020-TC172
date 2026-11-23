@@ -13,6 +13,14 @@ export default {
           700: '#18233c',
           600: '#233252',
           500: '#33466f',
+          400: '#4a5d8a',
+        },
+        // Experiment / path identity colours (kept in sync with src/lib/theme.ts)
+        mode: {
+          m0: '#b6c2d6',
+          p1: '#22d3ee',
+          p2: '#a78bfa',
+          m2: '#34d399',
         },
       },
       fontFamily: {
@@ -27,6 +35,10 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(6px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        slideIn: {
+          '0%': { opacity: '0', transform: 'translateX(-8px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
         pulseDot: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.35' },
@@ -35,6 +47,7 @@ export default {
       animation: {
         flow: 'flow 1.2s linear infinite',
         'fade-up': 'fadeUp 0.35s ease-out both',
+        'slide-in': 'slideIn 0.25s ease-out both',
         'pulse-dot': 'pulseDot 2s ease-in-out infinite',
       },
     },

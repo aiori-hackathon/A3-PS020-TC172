@@ -84,4 +84,6 @@ export interface LogEntry {
   description: string;
   status: LogStatus;
   sourceFile?: string;
+  /** 'event' = a line from a recorded log; 'record' = a summarised result. Set by `/api/logs` only. */
+  kind?: 'event' | 'record';
 }

@@ -26,3 +26,6 @@ Thumbs.db
 
 # Stage 3 review copy
 stage3-review/
+
+# Local backup archive
+*.tar.gz

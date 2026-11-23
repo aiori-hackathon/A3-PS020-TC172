@@ -16,7 +16,7 @@ import { getJson } from './client';
 export const getHealth = () => getJson<ApiHealth>('/api/health', 4000);
 export const getOverview = () => getJson<ApiOverview>('/api/overview');
 export const getTopology = () => getJson<ApiTopology>('/api/topology');
-export const getBenchmarks = () => getJson<ApiBenchmarks>('/api/benchmarks');
+export const getBenchmarks = (includeTrials = false) => getJson<ApiBenchmarks>(`/api/benchmarks${includeTrials ? '?include_trials=true' : ''}`);
 export const getFailover = () => getJson<ApiFailover>('/api/failover');
 export const getLogs = (params: { limit?: number; kind?: 'event' | 'record'; category?: string; severity?: string } = {}) => {
   const q = new URLSearchParams();
