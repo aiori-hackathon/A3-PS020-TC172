@@ -1,0 +1,504 @@
+
+===== NetNova M0 OSPF6 read-only diagnostic =====
+Project path: /root/NetNova/src
+Timestamp: Mon Nov 23 09:35:01 PM UTC 2026
+
+===== Namespaces =====
+d (id: 6)
+s (id: 5)
+r5 (id: 2)
+r4 (id: 4)
+r3 (id: 3)
+r2 (id: 1)
+r1 (id: 0)
+
+===== r1: interfaces and addresses =====
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+r1-r2@if3        UP             0a:00:ab:67:3a:fb <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r1-r3@if7        UP             26:c4:bb:ac:19:13 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r1-s@if14        UP             5e:e3:e6:f6:e9:0f <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        ::1/128 
+r1-r2@if3        UP             fc00:12::1/64 fe80::800:abff:fe67:3afb/64 
+r1-r3@if7        UP             fc00:13::1/64 fe80::24c4:bbff:feac:1913/64 
+r1-s@if14        UP             fc00:a::2/64 fe80::5ce3:e6ff:fef6:e90f/64 
+fc00:a::/64 dev r1-s proto kernel metric 256 pref medium
+fc00:12::/64 dev r1-r2 proto kernel metric 256 pref medium
+fc00:13::/64 dev r1-r3 proto kernel metric 256 pref medium
+fe80::/64 dev r1-r2 proto kernel metric 256 pref medium
+fe80::/64 dev r1-r3 proto kernel metric 256 pref medium
+fe80::/64 dev r1-s proto kernel metric 256 pref medium
+
+===== r1: FRR process check =====
+   4927 Ssl  /usr/lib/frr/zebra -d -u root -g root -N r1 -f /home/shivanirm/NetNova/src/configs/m0/r1/zebra.conf -i /run/frr/r1/zebra.pid
+   4938 Ss   /usr/lib/frr/ospf6d -d -u root -g root -N r1 -f /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf -i /run/frr/r1/ospf6d.pid
+
+===== r1: runtime sockets and pid files =====
+total 8
+drwxr-xr-x 2 root root   140 Nov 23 20:49 .
+drwxr-xr-x 7 frr  frr    140 Nov 23 20:49 ..
+-rw-r--r-- 1 root root     5 Nov 23 20:49 ospf6d.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 ospf6d.vty
+-rw-r--r-- 1 root root     5 Nov 23 20:49 zebra.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 zebra.vty
+srwx------ 1 root root     0 Nov 23 20:49 zserv.api
+
+===== r1: OSPF6 config file =====
+Missing: /root/NetNova/src/configs/m0/r1/ospf6d.conf
+
+===== r1: Zebra CLI =====
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+C>* fc00:a::/64 is directly connected, r1-s, weight 1, 00:45:41
+L>* fc00:a::2/128 is directly connected, r1-s, weight 1, 00:45:41
+C>* fc00:12::/64 is directly connected, r1-r2, weight 1, 00:15:48
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:15:48
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:15:53
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:33:07
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:33:17
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:40:10
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:41:00
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:41:06
+L * fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:42:33
+L>* fc00:12::1/128 is directly connected, r1-r2, weight 1, 00:45:41
+C>* fc00:13::/64 is directly connected, r1-r3, weight 1, 00:45:41
+L>* fc00:13::1/128 is directly connected, r1-r3, weight 1, 00:45:41
+C * fe80::/64 is directly connected, r1-r2, weight 1, 00:15:48
+C * fe80::/64 is directly connected, r1-s, weight 1, 00:45:41
+C>* fe80::/64 is directly connected, r1-r3, weight 1, 00:45:41
+
+===== r1: OSPF6 CLI =====
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+Building configuration...
+
+Current configuration:
+!
+frr version 10.5.1
+frr defaults traditional
+hostname NetNova-Ubuntu
+service integrated-vtysh-config
+!
+end
+% OSPFv3 instance not found
+% OSPFv3 instance not found
+% OSPFv3 instance not found
+
+===== r2: interfaces and addresses =====
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+r2-r1@if4        UP             7e:c6:ff:04:b5:1e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r2-r5@if5        UP             6e:40:ac:3e:87:a6 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        ::1/128 
+r2-r1@if4        UP             fc00:12::2/64 fe80::7cc6:ffff:fe04:b51e/64 
+r2-r5@if5        UP             fc00:25::2/64 fe80::6c40:acff:fe3e:87a6/64 
+fc00:12::/64 dev r2-r1 proto kernel metric 256 pref medium
+fc00:25::/64 dev r2-r5 proto kernel metric 256 pref medium
+fe80::/64 dev r2-r1 proto kernel metric 256 pref medium
+fe80::/64 dev r2-r5 proto kernel metric 256 pref medium
+
+===== r2: FRR process check =====
+   4947 Ssl  /usr/lib/frr/zebra -d -u root -g root -N r2 -f /home/shivanirm/NetNova/src/configs/m0/r2/zebra.conf -i /run/frr/r2/zebra.pid
+   4953 Ss   /usr/lib/frr/ospf6d -d -u root -g root -N r2 -f /home/shivanirm/NetNova/src/configs/m0/r2/ospf6d.conf -i /run/frr/r2/ospf6d.pid
+
+===== r2: runtime sockets and pid files =====
+total 8
+drwxr-xr-x 2 root root   140 Nov 23 20:49 .
+drwxr-xr-x 7 frr  frr    140 Nov 23 20:49 ..
+-rw-r--r-- 1 root root     5 Nov 23 20:49 ospf6d.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 ospf6d.vty
+-rw-r--r-- 1 root root     5 Nov 23 20:49 zebra.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 zebra.vty
+srwx------ 1 root root     0 Nov 23 20:49 zserv.api
+
+===== r2: OSPF6 config file =====
+Missing: /root/NetNova/src/configs/m0/r2/ospf6d.conf
+
+===== r2: Zebra CLI =====
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+C>* fc00:12::/64 is directly connected, r2-r1, weight 1, 00:45:41
+L>* fc00:12::2/128 is directly connected, r2-r1, weight 1, 00:45:41
+C>* fc00:25::/64 is directly connected, r2-r5, weight 1, 00:45:41
+L>* fc00:25::2/128 is directly connected, r2-r5, weight 1, 00:45:41
+C * fe80::/64 is directly connected, r2-r5, weight 1, 00:45:41
+C>* fe80::/64 is directly connected, r2-r1, weight 1, 00:45:41
+
+===== r2: OSPF6 CLI =====
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+Building configuration...
+
+Current configuration:
+!
+frr version 10.5.1
+frr defaults traditional
+hostname NetNova-Ubuntu
+!
+end
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r2/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r2/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+
+===== r3: interfaces and addresses =====
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+r3-r1@if8        UP             f6:81:f5:6e:1e:62 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r3-r4@if9        UP             a2:ea:1c:a3:d1:36 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        ::1/128 
+r3-r1@if8        UP             fc00:13::3/64 fe80::f481:f5ff:fe6e:1e62/64 
+r3-r4@if9        UP             fc00:34::3/64 fe80::a0ea:1cff:fea3:d136/64 
+fc00:13::/64 dev r3-r1 proto kernel metric 256 pref medium
+fc00:34::/64 dev r3-r4 proto kernel metric 256 pref medium
+fe80::/64 dev r3-r1 proto kernel metric 256 pref medium
+fe80::/64 dev r3-r4 proto kernel metric 256 pref medium
+
+===== r3: FRR process check =====
+   4957 Ssl  /usr/lib/frr/zebra -d -u root -g root -N r3 -f /home/shivanirm/NetNova/src/configs/m0/r3/zebra.conf -i /run/frr/r3/zebra.pid
+   4963 Ss   /usr/lib/frr/ospf6d -d -u root -g root -N r3 -f /home/shivanirm/NetNova/src/configs/m0/r3/ospf6d.conf -i /run/frr/r3/ospf6d.pid
+
+===== r3: runtime sockets and pid files =====
+total 8
+drwxr-xr-x 2 root root   140 Nov 23 20:49 .
+drwxr-xr-x 7 frr  frr    140 Nov 23 20:49 ..
+-rw-r--r-- 1 root root     5 Nov 23 20:49 ospf6d.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 ospf6d.vty
+-rw-r--r-- 1 root root     5 Nov 23 20:49 zebra.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 zebra.vty
+srwx------ 1 root root     0 Nov 23 20:49 zserv.api
+
+===== r3: OSPF6 config file =====
+Missing: /root/NetNova/src/configs/m0/r3/ospf6d.conf
+
+===== r3: Zebra CLI =====
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+C>* fc00:13::/64 is directly connected, r3-r1, weight 1, 00:45:40
+L>* fc00:13::3/128 is directly connected, r3-r1, weight 1, 00:45:40
+C>* fc00:34::/64 is directly connected, r3-r4, weight 1, 00:45:40
+L>* fc00:34::3/128 is directly connected, r3-r4, weight 1, 00:45:40
+C * fe80::/64 is directly connected, r3-r4, weight 1, 00:45:40
+C>* fe80::/64 is directly connected, r3-r1, weight 1, 00:45:40
+
+===== r3: OSPF6 CLI =====
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+Building configuration...
+
+Current configuration:
+!
+frr version 10.5.1
+frr defaults traditional
+hostname NetNova-Ubuntu
+!
+end
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r3/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r3/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+
+===== r4: interfaces and addresses =====
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+r4-r3@if10       UP             8e:a3:78:f0:a7:35 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r4-r5@if11       UP             aa:05:6c:85:53:ad <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        ::1/128 
+r4-r3@if10       UP             fc00:34::4/64 fe80::8ca3:78ff:fef0:a735/64 
+r4-r5@if11       UP             fc00:45::4/64 fe80::a805:6cff:fe85:53ad/64 
+fc00:34::/64 dev r4-r3 proto kernel metric 256 pref medium
+fc00:45::/64 dev r4-r5 proto kernel metric 256 pref medium
+fe80::/64 dev r4-r3 proto kernel metric 256 pref medium
+fe80::/64 dev r4-r5 proto kernel metric 256 pref medium
+
+===== r4: FRR process check =====
+   4967 Ssl  /usr/lib/frr/zebra -d -u root -g root -N r4 -f /home/shivanirm/NetNova/src/configs/m0/r4/zebra.conf -i /run/frr/r4/zebra.pid
+   4973 Ss   /usr/lib/frr/ospf6d -d -u root -g root -N r4 -f /home/shivanirm/NetNova/src/configs/m0/r4/ospf6d.conf -i /run/frr/r4/ospf6d.pid
+
+===== r4: runtime sockets and pid files =====
+total 8
+drwxr-xr-x 2 root root   140 Nov 23 20:49 .
+drwxr-xr-x 7 frr  frr    140 Nov 23 20:49 ..
+-rw-r--r-- 1 root root     5 Nov 23 20:49 ospf6d.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 ospf6d.vty
+-rw-r--r-- 1 root root     5 Nov 23 20:49 zebra.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 zebra.vty
+srwx------ 1 root root     0 Nov 23 20:49 zserv.api
+
+===== r4: OSPF6 config file =====
+Missing: /root/NetNova/src/configs/m0/r4/ospf6d.conf
+
+===== r4: Zebra CLI =====
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+C>* fc00:34::/64 is directly connected, r4-r3, weight 1, 00:45:40
+L>* fc00:34::4/128 is directly connected, r4-r3, weight 1, 00:45:40
+C>* fc00:45::/64 is directly connected, r4-r5, weight 1, 00:45:40
+L>* fc00:45::4/128 is directly connected, r4-r5, weight 1, 00:45:40
+C * fe80::/64 is directly connected, r4-r5, weight 1, 00:45:40
+C>* fe80::/64 is directly connected, r4-r3, weight 1, 00:45:40
+
+===== r4: OSPF6 CLI =====
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+Building configuration...
+
+Current configuration:
+!
+frr version 10.5.1
+frr defaults traditional
+hostname NetNova-Ubuntu
+!
+end
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r4/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r4/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+
+===== r5: interfaces and addresses =====
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+r5-r2@if6        UP             36:04:7b:85:80:01 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r5-r4@if12       UP             66:69:02:a8:33:0e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+r5-d@if16        UP             82:20:ef:2d:71:99 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        ::1/128 
+r5-r2@if6        UP             fc00:25::5/64 fe80::3404:7bff:fe85:8001/64 
+r5-r4@if12       UP             fc00:45::5/64 fe80::6469:2ff:fea8:330e/64 
+r5-d@if16        UP             fc00:b::2/64 fe80::8020:efff:fe2d:7199/64 
+fc00:b::/64 dev r5-d proto kernel metric 256 pref medium
+fc00:25::/64 dev r5-r2 proto kernel metric 256 pref medium
+fc00:45::/64 dev r5-r4 proto kernel metric 256 pref medium
+fe80::/64 dev r5-r2 proto kernel metric 256 pref medium
+fe80::/64 dev r5-r4 proto kernel metric 256 pref medium
+fe80::/64 dev r5-d proto kernel metric 256 pref medium
+
+===== r5: FRR process check =====
+   4977 Ssl  /usr/lib/frr/zebra -d -u root -g root -N r5 -f /home/shivanirm/NetNova/src/configs/m0/r5/zebra.conf -i /run/frr/r5/zebra.pid
+   4983 Ss   /usr/lib/frr/ospf6d -d -u root -g root -N r5 -f /home/shivanirm/NetNova/src/configs/m0/r5/ospf6d.conf -i /run/frr/r5/ospf6d.pid
+
+===== r5: runtime sockets and pid files =====
+total 8
+drwxr-xr-x 2 root root   140 Nov 23 20:49 .
+drwxr-xr-x 7 frr  frr    140 Nov 23 20:49 ..
+-rw-r--r-- 1 root root     5 Nov 23 20:49 ospf6d.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 ospf6d.vty
+-rw-r--r-- 1 root root     5 Nov 23 20:49 zebra.pid
+srwxrwx--- 1 root frrvty   0 Nov 23 20:49 zebra.vty
+srwx------ 1 root root     0 Nov 23 20:49 zserv.api
+
+===== r5: OSPF6 config file =====
+Missing: /root/NetNova/src/configs/m0/r5/ospf6d.conf
+
+===== r5: Zebra CLI =====
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+Codes: K - kernel route, C - connected, L - local, S - static,
+       R - RIPng, O - OSPFv3, I - IS-IS, B - BGP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric, t - Table-Direct,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+IPv6 unicast VRF default:
+C>* fc00:b::/64 is directly connected, r5-d, weight 1, 00:45:39
+L>* fc00:b::2/128 is directly connected, r5-d, weight 1, 00:45:39
+C>* fc00:25::/64 is directly connected, r5-r2, weight 1, 00:45:39
+L>* fc00:25::5/128 is directly connected, r5-r2, weight 1, 00:45:39
+C>* fc00:45::/64 is directly connected, r5-r4, weight 1, 00:45:39
+L>* fc00:45::5/128 is directly connected, r5-r4, weight 1, 00:45:39
+C * fe80::/64 is directly connected, r5-d, weight 1, 00:45:39
+C * fe80::/64 is directly connected, r5-r4, weight 1, 00:45:39
+C>* fe80::/64 is directly connected, r5-r2, weight 1, 00:45:39
+
+===== r5: OSPF6 CLI =====
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+FRRouting 10.5.1 (NetNova-Ubuntu) on Linux(7.0.0-43-generic).
+Copyright 1996-2005 Kunihiro Ishiguro, et al.
+configured with:
+    '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc' '--localstatedir=/var' '--disable-option-checking' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu' '--runstatedir=/run' '--disable-maintainer-mode' '--sbindir=/usr/lib/frr' '--with-vtysh-pager=/usr/bin/pager' '--libdir=/usr/lib/x86_64-linux-gnu/frr' '--with-moduledir=/usr/lib/x86_64-linux-gnu/frr/modules' '--disable-dependency-tracking' '--enable-rpki' '--enable-scripting' '--enable-pim6d' '--with-libpam' '--enable-doc' '--enable-doc-html' '--enable-snmp' '--enable-fpm' '--disable-protobuf' '--disable-zeromq' '--enable-ospfapi' '--enable-bgp-vnc' '--enable-multipath=256' '--enable-user=frr' '--enable-group=frr' '--enable-vty-group=frrvty' '--enable-configfile-mask=0640' '--enable-logfile-mask=0640' 'build_alias=x86_64-linux-gnu' 'LIBS= -latomic' 'PYTHON=python3'
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+Building configuration...
+
+Current configuration:
+!
+frr version 10.5.1
+frr defaults traditional
+hostname NetNova-Ubuntu
+!
+end
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+% Can't open configuration file /etc/frr/r5/vtysh.conf due to 'No such file or directory'.
+Configuration file[/etc/frr/r5/frr.conf] processing failure: 11
+% OSPFv3 instance not found
+
+===== Kernel IPv6 forwarding and seg6 settings =====
+--- r1 ---
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.seg6_enabled = 1
+net.ipv6.conf.all.accept_ra = 0
+--- r2 ---
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.seg6_enabled = 1
+net.ipv6.conf.all.accept_ra = 0
+--- r3 ---
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.seg6_enabled = 1
+net.ipv6.conf.all.accept_ra = 0
+--- r4 ---
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.seg6_enabled = 1
+net.ipv6.conf.all.accept_ra = 0
+--- r5 ---
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.all.seg6_enabled = 1
+net.ipv6.conf.all.accept_ra = 0
+
+===== Recent FRR/kernel messages =====
+Nov 23 21:05:30 NetNova-Ubuntu sudo[5626]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/cat /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf
+Nov 23 21:06:53 NetNova-Ubuntu sudo[5668]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 /usr/lib/frr/ospf6d -C -f /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf
+Nov 23 21:08:32 NetNova-Ubuntu sudo[5697]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -la /etc/frr
+Nov 23 21:08:43 NetNova-Ubuntu sudo[5704]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/cat /etc/frr/daemons
+Nov 23 21:09:20 NetNova-Ubuntu sudo[5716]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -la /etc/frr/r1
+Nov 23 21:09:27 NetNova-Ubuntu sudo[5726]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/cat /etc/frr/r1-ospf6-test.conf
+Nov 23 21:09:35 NetNova-Ubuntu sudo[5732]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -la /etc/frr/srv6
+Nov 23 21:10:12 NetNova-Ubuntu sudo[5746]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/cat /etc/frr/r1/vtysh.conf
+Nov 23 21:10:12 NetNova-Ubuntu sudo[5752]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/find /etc/frr/srv6 -type f
+Nov 23 21:10:20 NetNova-Ubuntu sudo[5759]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/find /etc/frr/srv6 -type f -exec sh -c echo \"\\n===== $1 =====\"; cat \"$1\" _ {} ;
+Nov 23 21:10:48 NetNova-Ubuntu sudo[5778]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -c show ipv6 ospf6
+Nov 23 21:11:21 NetNova-Ubuntu sudo[5787]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -l /run/frr/r1/ospf6d.vty
+Nov 23 21:11:29 NetNova-Ubuntu sudo[5797]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/sh -c printf \"show ipv6 ospf6 neighbor\\n\" | nc -U /run/frr/r1/ospf6d.vty
+Nov 23 21:11:29 NetNova-Ubuntu kernel: audit: type=1400 audit(1795468289.635:291): apparmor="DENIED" operation="connect" class="file" info="Failed name lookup - disconnected path" error=-13 profile="nc.openbsd" name="run/frr/r1/ospf6d.vty" pid=5802 comm="nc" requested_mask="wr" denied_mask="wr" fsuid=0 ouid=0
+Nov 23 21:12:40 NetNova-Ubuntu sudo[5833]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 python3 -c import socket; s=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM); s.connect(\"/run/frr/r1/ospf6d.vty\"); print(\"Socket connection successful\"); s.close()
+Nov 23 21:12:59 NetNova-Ubuntu sudo[5839]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 python3 -c \nimport socket\ns=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)\ns.settimeout(2)\ns.connect(\"/run/frr/r1/ospf6d.vty\")\ntry:\n print(s.recv(4096).decode(errors=\"replace\"))\nexcept Exception:\n pass\ns.sendall(b\"show ipv6 ospf6 neighbor\\n\")\ntry:\n print(s.recv(8192).decode(errors=\"replace\"))\nexcept Exception as e:\n print(\"Read:\",e)\ns.close()\n
+Nov 23 21:13:26 NetNova-Ubuntu sudo[5850]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 python3 -c \nimport socket,time\ns=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)\ns.settimeout(3)\ns.connect(\"/run/frr/r1/ospf6d.vty\")\ns.sendall(b\"\\r\")\ntime.sleep(0.5)\ns.sendall(b\"show ipv6 ospf6 neighbor\\r\")\ntime.sleep(1)\ntry:\n    print(s.recv(8192).decode(errors=\"replace\"))\nexcept Exception as e:\n    print(\"Socket response:\",e)\ns.close()\n
+Nov 23 21:15:04 NetNova-Ubuntu sudo[5919]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 --vty_socket /run/frr/r1 -d ospf6d -c show ipv6 ospf6 neighbor
+Nov 23 21:15:22 NetNova-Ubuntu sudo[5941]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -l /run/frr/r1/
+Nov 23 21:15:39 NetNova-Ubuntu sudo[5956]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -c show ipv6 ospf6 neighbor
+Nov 23 21:17:04 NetNova-Ubuntu sudo[6005]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 python3 -c import socket,time; s=socket.create_connection((\"127.0.0.1\",2606),2); s.settimeout(3); s.sendall(b\"show ipv6 ospf6 neighbor\\r\\n\"); time.sleep(1); print(s.recv(4096).decode(errors=\"replace\")); s.close()
+Nov 23 21:17:58 NetNova-Ubuntu sudo[6024]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/journalctl -u frr --no-pager -n 80
+Nov 23 21:20:14 NetNova-Ubuntu sudo[6071]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 /usr/lib/frr/ospf6d -C -N r1 -f /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf
+Nov 23 21:21:28 NetNova-Ubuntu sudo[6105]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d zebra -c show ipv6 route
+Nov 23 21:21:50 NetNova-Ubuntu sudo[6117]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show version
+Nov 23 21:22:09 NetNova-Ubuntu sudo[6129]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show ipv6 ospf6 neighbor
+Nov 23 21:22:38 NetNova-Ubuntu sudo[6137]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show running-config
+Nov 23 21:23:40 NetNova-Ubuntu sudo[6164]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show ipv6 ospf6
+Nov 23 21:24:51 NetNova-Ubuntu sudo[6192]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show logging
+Nov 23 21:25:50 NetNova-Ubuntu sudo[6225]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -l /run/frr/r1/ospf6d.vty
+Nov 23 21:26:07 NetNova-Ubuntu sudo[6236]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/lib/frr/ospf6d --help
+Nov 23 21:26:30 NetNova-Ubuntu sudo[6246]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/lib/frr/ospf6d -C -N r1 -f /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf
+Nov 23 21:27:02 NetNova-Ubuntu sudo[6257]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show interface
+Nov 23 21:27:41 NetNova-Ubuntu sudo[6275]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/ls -l /run/frr/r1/
+Nov 23 21:28:00 NetNova-Ubuntu sudo[6285]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d zebra -c show version
+Nov 23 21:28:16 NetNova-Ubuntu sudo[6296]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show ipv6 ospf6 interface
+Nov 23 21:28:36 NetNova-Ubuntu sudo[6308]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/cat /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf
+Nov 23 21:28:55 NetNova-Ubuntu sudo[6318]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 vtysh -N r1 -d ospf6d -c show running-config
+Nov 23 21:29:15 NetNova-Ubuntu sudo[6331]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/sbin/ip netns exec r1 /usr/lib/frr/ospf6d -C -N r1 -f /home/shivanirm/NetNova/src/configs/m0/r1/ospf6d.conf
+Nov 23 21:34:01 NetNova-Ubuntu sudo[6404]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/bash m0_ospf6_diagnose.sh
+Nov 23 21:35:01 NetNova-Ubuntu sudo[6545]: shivanirm : TTY=/dev/pts/0 ; PWD=/home/shivanirm/NetNova/src ; USER=root ; COMMAND=/usr/bin/bash m0_ospf6_diagnose.sh
+Nov 23 21:11:29 NetNova-Ubuntu kernel: audit: type=1400 audit(1795468289.635:291): apparmor="DENIED" operation="connect" class="file" info="Failed name lookup - disconnected path" error=-13 profile="nc.openbsd" name="run/frr/r1/ospf6d.vty" pid=5802 comm="nc" requested_mask="wr" denied_mask="wr" fsuid=0 ouid=0
+Nov 23 21:19:08 NetNova-Ubuntu kernel: audit: type=1400 audit(1795468748.831:292): apparmor="DENIED" operation="connect" class="file" info="Failed name lookup - disconnected path" error=-13 profile="tcpdump" name="run/systemd/userdb/org.gnome.DisplayManager" pid=6051 comm="tcpdump" requested_mask="wr" denied_mask="wr" fsuid=0 ouid=0
+Nov 23 21:19:08 NetNova-Ubuntu kernel: audit: type=1400 audit(1795468748.831:293): apparmor="DENIED" operation="connect" class="file" info="Failed name lookup - disconnected path" error=-13 profile="tcpdump" name="run/systemd/userdb/io.systemd.DynamicUser" pid=6051 comm="tcpdump" requested_mask="wr" denied_mask="wr" fsuid=0 ouid=0
+Nov 23 21:19:13 NetNova-Ubuntu kernel: audit: type=1400 audit(1795468753.810:294): apparmor="DENIED" operation="getattr" class="file" info="Failed name lookup - disconnected path" error=-13 profile="tcpdump" name="dev/pts/1" pid=6051 comm="tcpdump" requested_mask="r" denied_mask="r" fsuid=983 ouid=0
+
+===== Diagnostic complete =====
+Read-only checks completed. No services, files, interfaces, or namespaces were changed.

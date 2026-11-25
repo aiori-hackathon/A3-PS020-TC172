@@ -1,0 +1,60 @@
+========================================
+M2 Controlled Monitor Started: 2026-11-21 19:53:58.381634245
+2026-11-21 19:53:58.397613005 SUCCESS: Destination reachable
+2026-11-21 19:53:59.483149053 SUCCESS: Destination reachable
+2026-11-21 19:54:00.599223253 SUCCESS: Destination reachable
+2026-11-21 19:54:01.690076561 SUCCESS: Destination reachable
+2026-11-21 19:54:02.780792615 SUCCESS: Destination reachable
+2026-11-21 19:54:03.869550686 SUCCESS: Destination reachable
+2026-11-21 19:54:04.959221002 SUCCESS: Destination reachable
+2026-11-21 19:54:06.050308262 SUCCESS: Destination reachable
+2026-11-21 19:54:07.549126506 SUCCESS: Destination reachable
+2026-11-21 19:54:08.639865867 SUCCESS: Destination reachable
+2026-11-21 19:54:09.732028693 SUCCESS: Destination reachable
+2026-11-21 19:54:10.827189216 SUCCESS: Destination reachable
+2026-11-21 19:54:11.900077896 SUCCESS: Destination reachable
+2026-11-21 19:54:12.976341890 SUCCESS: Destination reachable
+2026-11-21 19:54:14.063032033 SUCCESS: Destination reachable
+2026-11-21 19:54:15.157892287 SUCCESS: Destination reachable
+2026-11-21 19:54:16.231197044 SUCCESS: Destination reachable
+2026-11-21 19:54:17.309960267 SUCCESS: Destination reachable
+2026-11-21 19:54:18.391215821 SUCCESS: Destination reachable
+2026-11-21 19:54:19.534876415 SUCCESS: Destination reachable
+2026-11-21 19:54:20.643212340 SUCCESS: Destination reachable
+2026-11-21 19:54:21.707987641 SUCCESS: Destination reachable
+2026-11-21 19:54:22.793749372 SUCCESS: Destination reachable
+2026-11-21 19:54:23.886036054 SUCCESS: Destination reachable
+2026-11-21 19:54:24.964860193 SUCCESS: Destination reachable
+2026-11-21 19:54:26.053339125 SUCCESS: Destination reachable
+2026-11-21 19:54:27.146333621 SUCCESS: Destination reachable
+2026-11-21 19:54:28.220661267 SUCCESS: Destination reachable
+2026-11-21 19:54:29.323148248 SUCCESS: Destination reachable
+2026-11-21 19:54:30.408157732 SUCCESS: Destination reachable
+2026-11-21 19:54:31.488941822 SUCCESS: Destination reachable
+2026-11-21 19:54:32.575910321 SUCCESS: Destination reachable
+2026-11-21 19:54:33.720921573 SUCCESS: Destination reachable
+2026-11-21 19:54:34.936142893 SUCCESS: Destination reachable
+2026-11-21 19:54:36.017488264 FAILURE: Probe 1/3
+2026-11-21 19:54:38.112356594 FAILURE: Probe 2/3
+2026-11-21 19:54:40.202553220 FAILURE: Probe 3/3
+2026-11-21 19:54:41.267347830 FAILOVER: Installing P2
+Configuring P2 SRv6 backup policy...
+R1 -> R3: fe80::f481:f5ff:fe6e:1e62
+R3 -> R4: fe80::8ca3:78ff:fef0:a735
+R4 -> R5: fe80::6469:2ff:fea8:330e
+P2 SRv6 backup policy installed successfully.
+2026-11-21 19:54:41.510959166 P2 INSTALL COMMAND COMPLETED
+fc00:b::1 from ::  encap seg6 mode encap segs 3 [ fc00:0:3::1 fc00:0:4::1 fc00:0:5::d6 ] via fe80::f481:f5ff:fe6e:1e62 dev r1-r3 src fc00:13::1 metric 1024 pref medium
+2026-11-21 19:54:41.596224688 P2 ROUTE VERIFIED
+PING fc00:b::1 (fc00:b::1) 56 data bytes
+64 bytes from fc00:b::1: icmp_seq=1 ttl=60 time=0.365 ms
+64 bytes from fc00:b::1: icmp_seq=2 ttl=60 time=0.176 ms
+64 bytes from fc00:b::1: icmp_seq=3 ttl=60 time=0.218 ms
+64 bytes from fc00:b::1: icmp_seq=4 ttl=60 time=0.252 ms
+64 bytes from fc00:b::1: icmp_seq=5 ttl=60 time=0.314 ms
+
+--- fc00:b::1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4073ms
+rtt min/avg/max/mdev = 0.176/0.265/0.365/0.067 ms
+2026-11-21 19:54:46.823995162 RECOVERY SUCCESS: P2 route and connectivity verified
+M2 Controlled Monitor Completed: 2026-11-21 19:54:46.867797393

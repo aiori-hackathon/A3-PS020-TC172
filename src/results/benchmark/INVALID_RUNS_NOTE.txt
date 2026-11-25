@@ -1,0 +1,10 @@
+# Invalid Benchmark Runs — 21 November 2026
+
+The P1 and P2 benchmark CSV files in this directory were generated after the emulated network topology had been removed.
+
+- P1: 30 trials, 1000 packets per trial, 0 packets received, 100% packet loss.
+- P2: 30 trials, 1000 packets per trial, 0 packets received, 100% packet loss.
+- Requested packet rate recorded as 0 pps.
+- RTT statistics are unavailable (NA).
+
+These runs are invalid for performance comparison and must not be combined with earlier successful P1/P2 benchmark datasets. The CSV files are retained for traceability.

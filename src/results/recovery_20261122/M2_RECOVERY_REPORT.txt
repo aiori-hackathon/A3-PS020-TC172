@@ -1,0 +1,35 @@
+NetNova — M2 Controlled Failure Recovery Validation
+
+Failure scenario:
+- Primary P1 path was active through R1 -> R2 -> R5.
+- R2-R5 link was deliberately brought down.
+- The monitor detected three consecutive failed probes.
+
+Recovery:
+- P2 was installed automatically by the monitor.
+- Alternate path: R1 -> R3 -> R4 -> R5.
+- Segment list: fc00:0:3::1 -> fc00:0:4::1 -> fc00:0:5::d6
+- P2 route verification succeeded.
+
+Recovery connectivity:
+- 5/5 packets received
+- Packet loss: 0%
+- Average RTT: 0.265 ms
+- Minimum RTT: 0.176 ms
+- Maximum RTT: 0.365 ms
+
+Observed timing:
+- First failed probe to failover start: approximately 5.25 seconds
+- Third failed probe to failover start: approximately 1.06 seconds
+- P2 installation start to route verification: approximately 0.33 seconds
+- Route verification to recovery test completion: approximately 5.23 seconds
+
+Result:
+- Controlled failure detected.
+- P2 installed and route verified.
+- End-to-end connectivity restored and verified.
+- Monitor completed successfully.
+
+Note:
+These are observations from this controlled recovery session.
+They are not standardized recovery-time benchmarks.

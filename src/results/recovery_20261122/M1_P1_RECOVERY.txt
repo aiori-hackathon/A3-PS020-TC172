@@ -1,0 +1,32 @@
+NetNova — M1 P1 SRv6 Recovery Validation
+
+Topology:
+Linux network namespaces R1-R5, S and D.
+
+M0 Recovery:
+- OSPFv3 core adjacencies verified FULL:
+  R1-R2, R1-R3, R3-R4, R4-R5, R2-R5
+- S -> D: 5/5 packets received, 0% loss
+- R1 learned destination routes via OSPF
+- ECMP verified for fc00:45::/64 via R2 and R3
+
+SRv6 SIDs:
+- R2: fc00:0:2::1 — End
+- R3: fc00:0:3::1 — End
+- R4: fc00:0:4::1 — End
+- R5: fc00:0:5::d6 — End.DT6 (main table)
+
+P1:
+- Segment list: fc00:0:2::1 -> fc00:0:5::d6
+- Encapsulation route at R1 verified
+- S -> D: 10/10 packets received, 0% loss
+- Average RTT: 0.349 ms
+- Min RTT: 0.163 ms
+- Max RTT: 1.389 ms
+- R5 End.DT6 counter observed: 10 packets, 1840 bytes, 0 errors
+
+R3 and R4 SID counters:
+- 0 packets at the time of P1 verification, consistent with the P1 segment list bypassing R3 and R4.
+
+Note:
+These are observations from this recovery session, not a new 30-trial benchmark.

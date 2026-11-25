@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      AIORI_DATA_DIR: /app/src/results
+      AIORI_SCRIPTS_DIR: /app/src/scripts
+      AIORI_CORS_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+      AIORI_LIVE_MONITORING: "false"
+    expose:
+      - "8000"
+    networks:
+      - netnova
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import json; from urllib.request import urlopen; data=json.load(urlopen('http://127.0.0.1:8000/api/health', timeout=3)); raise SystemExit(0 if data.get('status') == 'ok' else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    networks:
+      - netnova
+    restart: unless-stopped
+
+networks:
+  netnova:
+    driver: bridge
