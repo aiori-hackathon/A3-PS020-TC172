@@ -1,0 +1,87 @@
+AIORI-3 PS-020 — Team NetNova
+M2: Controlled SRv6 Failure Recovery Experiment
+Date: 21 November 2026
+
+========================================
+1. PRE-FAILURE BASELINE (P1)
+========================================
+Active route: P1 SRv6
+Segment list: fc00:0:2::1 -> fc00:0:5::d6
+Link: R2-R5 UP
+
+Baseline ping:
+Packets transmitted: 5
+Packets received: 5
+Packet loss: 0%
+Average RTT: 0.199 ms
+
+========================================
+2. CONTROLLED FAILURE
+========================================
+Failure injected: R2-R5 link DOWN
+Monitor: 41_m2_controlled.sh
+Detection condition: 3 consecutive failed probes
+
+========================================
+3. FAILOVER
+========================================
+Backup route installed: P2 SRv6
+Segment list:
+fc00:0:3::1 -> fc00:0:4::1 -> fc00:0:5::d6
+
+Route verification: SUCCESS
+
+Recovery ping:
+Packets transmitted: 5
+Packets received: 5
+Packet loss: 0%
+Average RTT: 0.545 ms
+
+========================================
+4. SID COUNTER EVIDENCE
+========================================
+R3: End
+Packets: 15
+Errors: 0
+
+R4: End
+Packets: 15
+Errors: 0
+
+R5: End.DT6
+Packets: 107
+Errors: 0
+
+========================================
+5. LINK RESTORATION
+========================================
+R2-R5 link: UP
+Interface verification: SUCCESS
+
+Post-restoration ping:
+Packets transmitted: 5
+Packets received: 5
+Packet loss: 0%
+Average RTT: 0.251 ms
+
+========================================
+6. CONCLUSION
+========================================
+The controlled failure experiment triggered three
+consecutive unsuccessful probes after the R2-R5
+link was taken down.
+
+The monitoring script installed the P2 SRv6 route.
+The intended P2 segment list was verified on R1,
+and destination connectivity was subsequently
+confirmed with 5 successful ping replies.
+
+SID counters on R3, R4 and R5 recorded activity
+with zero errors reported.
+
+The R2-R5 link was restored after the experiment,
+and end-to-end connectivity was verified again.
+
+This demonstrates successful controlled SRv6
+backup-route installation and connectivity recovery
+in the experimental topology.

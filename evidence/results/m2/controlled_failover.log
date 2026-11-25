@@ -1,0 +1,46 @@
+========================================
+M2 Controlled Monitor Started: 2026-11-20 20:49:42.226796224
+2026-11-20 20:49:42.236043083 SUCCESS: Destination reachable
+2026-11-20 20:49:43.303334566 SUCCESS: Destination reachable
+2026-11-20 20:49:44.402217651 SUCCESS: Destination reachable
+2026-11-20 20:49:45.489633700 SUCCESS: Destination reachable
+2026-11-20 20:49:46.562461696 SUCCESS: Destination reachable
+2026-11-20 20:49:47.662646448 SUCCESS: Destination reachable
+2026-11-20 20:49:48.866596148 SUCCESS: Destination reachable
+2026-11-20 20:49:50.056106890 SUCCESS: Destination reachable
+2026-11-20 20:49:51.266528489 SUCCESS: Destination reachable
+2026-11-20 20:49:52.492632842 SUCCESS: Destination reachable
+2026-11-20 20:49:53.697629775 SUCCESS: Destination reachable
+2026-11-20 20:49:54.964847565 SUCCESS: Destination reachable
+2026-11-20 20:49:56.252614796 SUCCESS: Destination reachable
+2026-11-20 20:49:57.485121952 SUCCESS: Destination reachable
+2026-11-20 20:49:58.654096014 SUCCESS: Destination reachable
+2026-11-20 20:49:59.854586188 SUCCESS: Destination reachable
+2026-11-20 20:50:01.092833310 SUCCESS: Destination reachable
+2026-11-20 20:50:02.288624494 SUCCESS: Destination reachable
+2026-11-20 20:50:03.476679798 SUCCESS: Destination reachable
+2026-11-20 20:50:04.676524955 SUCCESS: Destination reachable
+2026-11-20 20:50:05.748768553 FAILURE: Probe 1/3
+2026-11-20 20:50:07.833552695 FAILURE: Probe 2/3
+2026-11-20 20:50:09.917672916 FAILURE: Probe 3/3
+2026-11-20 20:50:12.249452409 FAILOVER: Installing P2
+Configuring P2 SRv6 backup policy...
+R1 -> R3: fe80::f481:f5ff:fe6e:1e62
+R3 -> R4: fe80::8ca3:78ff:fef0:a735
+R4 -> R5: fe80::6469:2ff:fea8:330e
+P2 SRv6 backup policy installed successfully.
+2026-11-20 20:50:13.340302974 P2 INSTALL COMMAND COMPLETED
+fc00:b::1 from ::  encap seg6 mode encap segs 3 [ fc00:0:3::1 fc00:0:4::1 fc00:0:5::d6 ] via fe80::f481:f5ff:fe6e:1e62 dev r1-r3 src fc00:13::1 metric 1024 pref medium
+2026-11-20 20:50:13.560794085 P2 ROUTE VERIFIED
+PING fc00:b::1 (fc00:b::1) 56 data bytes
+64 bytes from fc00:b::1: icmp_seq=1 ttl=60 time=1.54 ms
+64 bytes from fc00:b::1: icmp_seq=2 ttl=60 time=0.329 ms
+64 bytes from fc00:b::1: icmp_seq=3 ttl=60 time=0.283 ms
+64 bytes from fc00:b::1: icmp_seq=4 ttl=60 time=0.334 ms
+64 bytes from fc00:b::1: icmp_seq=5 ttl=60 time=0.241 ms
+
+--- fc00:b::1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4038ms
+rtt min/avg/max/mdev = 0.241/0.545/1.538/0.497 ms
+2026-11-20 20:50:18.804578950 RECOVERY SUCCESS: P2 route and connectivity verified
+M2 Controlled Monitor Completed: 2026-11-20 20:50:18.872398481

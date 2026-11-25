@@ -1,0 +1,58 @@
+M0 OSPFv3 BENCHMARK ANALYSIS
+Date: 21 November 2026
+
+Experimental setup:
+- Routing mode: M0 (OSPFv3 baseline)
+- Trials: 30
+- Packets per trial: 1000
+- Requested packet rate: 1000 packets per second
+
+Aggregate results:
+- Trials completed: 30
+- Total packets transmitted: 30000
+- Total packets received: 30000
+- Packet loss: 0.0%
+- Mean trial-average RTT: 0.02323 ms
+- Median trial-average RTT: 0.02100 ms
+- Highest observed RTT: 2.578 ms
+
+Top 5 trials by highest observed RTT:
+
+Trial 15:
+- Average RTT: 0.028 ms
+- Maximum RTT: 2.578 ms
+- RTT deviation: 0.102 ms
+- Packet loss: 0%
+
+Trial 4:
+- Average RTT: 0.081 ms
+- Maximum RTT: 1.936 ms
+- RTT deviation: 0.127 ms
+- Packet loss: 0%
+
+Trial 24:
+- Average RTT: 0.024 ms
+- Maximum RTT: 1.201 ms
+- RTT deviation: 0.050 ms
+- Packet loss: 0%
+
+Trial 3:
+- Average RTT: 0.089 ms
+- Maximum RTT: 1.121 ms
+- RTT deviation: 0.126 ms
+- Packet loss: 0%
+
+Trial 2:
+- Average RTT: 0.026 ms
+- Maximum RTT: 1.058 ms
+- RTT deviation: 0.054 ms
+- Packet loss: 0%
+
+Observation:
+All 30 trials completed with zero packet loss.
+The highest observed RTT across the benchmark was 2.578 ms in Trial 15.
+Variations in RTT were observed across trials. The ping measurements
+alone do not establish the cause of these variations.
+
+Source CSV:
+results/final/m0_benchmark_20261121.csv
